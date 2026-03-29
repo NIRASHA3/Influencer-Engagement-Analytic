@@ -1,0 +1,37 @@
+<svg width="760" height="520" viewBox="0 0 760 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="760" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF4E8"/>
+      <stop offset="1" stop-color="#FFE3CC"/>
+    </linearGradient>
+    <linearGradient id="card" x1="170" y1="90" x2="620" y2="410" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#FFF7EF"/>
+    </linearGradient>
+    <linearGradient id="line" x1="220" y1="360" x2="570" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF6B35"/>
+      <stop offset="1" stop-color="#FF9671"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="760" height="520" rx="34" fill="url(#bg)"/>
+
+  <circle cx="95" cy="115" r="54" fill="#FFD7BA"/>
+  <circle cx="670" cy="435" r="70" fill="#FFD0B3"/>
+  <circle cx="640" cy="96" r="28" fill="#FFC8A8"/>
+
+  <rect x="156" y="84" width="460" height="330" rx="26" fill="url(#card)" stroke="#F8C9A6" stroke-width="2"/>
+  <rect x="200" y="132" width="372" height="18" rx="9" fill="#FFE8D6"/>
+  <rect x="200" y="166" width="274" height="14" rx="7" fill="#FFE8D6"/>
+
+  <path d="M220 351L284 313L338 326L404 258L470 232L544 174" stroke="url(#line)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="220" cy="351" r="8" fill="#FF6B35"/>
+  <circle cx="284" cy="313" r="8" fill="#FF6B35"/>
+  <circle cx="338" cy="326" r="8" fill="#FF6B35"/>
+  <circle cx="404" cy="258" r="8" fill="#FF6B35"/>
+  <circle cx="470" cy="232" r="8" fill="#FF6B35"/>
+  <circle cx="544" cy="174" r="8" fill="#FF6B35"/>
+
+  <rect x="200" y="374" width="122" height="16" rx="8" fill="#FFE8D6"/>
+  <rect x="334" y="374" width="238" height="16" rx="8" fill="#FFE8D6"/>
+</svg>

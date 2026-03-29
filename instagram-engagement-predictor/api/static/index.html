@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Engagement Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-1: #eef3f9;
+            --bg-2: #dce7f4;
+            --ink: #12263a;
+            --ink-soft: #43607b;
+            --line: #d2dfed;
+            --glass: rgba(255, 255, 255, 0.17);
+            --panel: #ffffff;
+            --orange: #f97316;
+            --orange-deep: #ea580c;
+            --ok-bg: #eafaf3;
+            --ok-text: #0f6b42;
+            --warn-bg: #fff7e8;
+            --warn-text: #9a5d00;
+            --err-bg: #fef2f2;
+            --err-text: #b42318;
+            --shadow: 0 18px 44px rgba(13, 38, 76, 0.13);
+        }
+
+        body.dark {
+            --bg-1: #0b1e2d;
+            --bg-2: #112f46;
+            --ink: #eaf3fd;
+            --ink-soft: #9ec0df;
+            --line: #274761;
+            --glass: rgba(12, 35, 54, 0.62);
+            --panel: #10283d;
+            --ok-bg: #0f2f28;
+            --ok-text: #9fe7c4;
+            --warn-bg: #33240a;
+            --warn-text: #ffce7a;
+            --err-bg: #3a1f22;
+            --err-text: #ffc6c8;
+            --shadow: 0 20px 50px rgba(0, 0, 0, 0.42);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 7% 11%, rgba(249, 115, 22, 0.15), transparent 28%),
+                radial-gradient(circle at 93% 9%, rgba(36, 129, 233, 0.18), transparent 36%),
+                linear-gradient(180deg, var(--bg-1), var(--bg-2));
+            padding: 28px 14px 34px;
+        }
+
+        .app {
+            width: min(1340px, 100%);
+            margin: 0 auto;
+            display: grid;
+            gap: 18px;
+        }
+
+        .hero {
+            border-radius: 28px;
+            border: 1px solid rgba(201, 219, 236, 0.85);
+            background: linear-gradient(135deg, #10385f, #0f2c48 52%, #174d78);
+            color: #f5fbff;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: minmax(420px, 0.8fr) minmax(700px, 1.2fr);
+            gap: 24px;
+            padding: 34px 34px 30px;
+            overflow: hidden;
+            position: relative;
+            align-items: stretch;
+            min-height: 700px;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(95deg, rgba(255, 255, 255, 0.06), transparent 45%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            right: -90px;
+            top: -90px;
+            width: 360px;
+            height: 360px;
+            background: radial-gradient(circle, rgba(123, 196, 255, 0.26) 0%, rgba(123, 196, 255, 0) 70%);
+            pointer-events: none;
+        }
+
+        .hero-left {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            gap: 14px;
+            align-content: center;
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .brand-row img {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 4px;
+        }
+
+        .brand-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.1px;
+        }
+
+        .hero-left h1 {
+            margin: 4px 0 6px;
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(2rem, 3vw, 3rem);
+            line-height: 1.16;
+            max-width: 12ch;
+        }
+
+        .hero-left p {
+            margin: 0;
+            color: rgba(229, 244, 255, 0.9);
+            font-size: 1.03rem;
+            line-height: 1.45;
+            max-width: 47ch;
+        }
+
+        .hero-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0;
+        }
+
+        .pill {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(6, 27, 48, 0.58);
+            border: 1px solid rgba(220, 238, 255, 0.28);
+            color: #ffffff;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .kpi-card {
+            background: rgba(8, 26, 42, 0.6);
+            border: 1px solid rgba(233, 245, 255, 0.24);
+            border-radius: 16px;
+            padding: 10px 12px;
+            min-width: 160px;
+        }
+
+        .kpi-title {
+            font-size: 0.76rem;
+            color: rgba(225, 240, 255, 0.88);
+        }
+
+        .kpi-value {
+            margin-top: 3px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+        }
+
+        .kpi-sub {
+            margin-top: 4px;
+            display: grid;
+            gap: 3px;
+            font-size: 0.78rem;
+            color: rgba(223, 239, 255, 0.95);
+        }
+
+        /* Modern Auto-Changing Hero Gallery */
+        .hero-gallery {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            min-height: 620px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 14px 32px rgba(4, 14, 25, 0.4);
+        }
+
+        .hero-slides {
+            position: absolute;
+            inset: 0;
+        }
+
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-slide::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(8, 24, 39, 0.65), transparent 45%);
+            z-index: 1;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 18px;
+        }
+
+        .panel {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(201, 219, 236, 0.85);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 22px;
+        }
+
+        body.dark .panel {
+            border-color: rgba(201, 219, 236, 0.85);
+        }
+
+        .panel-head h2 {
+            margin: 0;
+            font-family: 'Sora', sans-serif;
+            font-size: 1.44rem;
+            color: #eaf4fe;
+        }
+
+        .panel-head p {
+            margin: 7px 0 0;
+            color: rgba(213, 232, 250, 0.92);
+            font-size: 0.98rem;
+        }
+
+        .top-controls {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .chip-btn {
+            min-height: 44px;
+            border-radius: 999px;
+            border: 1px solid rgba(231, 243, 255, 0.4);
+            background: rgba(8, 28, 45, 0.42);
+            color: #e8f4ff;
+            padding: 8px 14px;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .chip-btn:focus-visible,
+        .model-btn:focus-visible,
+        .plain-btn:focus-visible,
+        .toggle-switch input:focus-visible + span {
+            outline: 2px solid #ffd4a8;
+            outline-offset: 2px;
+        }
+
+        .field-grid {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 11px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #e6f3ff;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            border: 1px solid rgba(214, 231, 247, 0.76);
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            padding: 10px 11px;
+            font-size: 0.96rem;
+            color: #10283c;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        body.dark .field input,
+        body.dark .field select {
+            color: #e9f4ff;
+            background: rgba(14, 43, 66, 0.9);
+            border-color: rgba(71, 113, 148, 0.86);
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #ffc089;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.23);
+            outline: none;
+        }
+
+        .slider-row {
+            margin-top: 6px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .slider-row input[type="range"] {
+            width: 100%;
+            accent-color: var(--orange);
+        }
+
+        .slider-val {
+            min-width: 42px;
+            text-align: right;
+            color: #ffc995;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .hint {
+            margin-top: 4px;
+            color: #cae0f3;
+            font-size: 0.76rem;
+        }
+
+        .adv-block {
+            margin-top: 12px;
+            border: 1px solid rgba(224, 240, 255, 0.35);
+            border-radius: 13px;
+            padding: 10px;
+            background: rgba(9, 35, 55, 0.44);
+            color: #e4f2ff;
+        }
+
+        .adv-block summary {
+            cursor: pointer;
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            font-size: 0.86rem;
+        }
+
+        .toggle-switch {
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.86rem;
+        }
+
+        .toggle-switch span {
+            background: rgba(14, 47, 73, 0.68);
+            border: 1px solid rgba(217, 233, 248, 0.32);
+            border-radius: 999px;
+            padding: 4px 10px;
+        }
+
+        .sample-box {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .model-actions {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .model-btn {
+            appearance: none;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.89rem;
+            font-weight: 700;
+            letter-spacing: 0.1px;
+            cursor: pointer;
+            color: #fff;
+            min-height: 44px;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        .model-btn:hover {
+            transform: translateY(-1px);
+            filter: saturate(1.05);
+        }
+
+        .model-btn:active {
+            transform: translateY(0);
+        }
+
+        .model-btn.xgb,
+        .model-btn.rf {
+            background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+            box-shadow: 0 11px 24px rgba(234, 88, 12, 0.34);
+        }
+
+        .model-btn.rf {
+            background: linear-gradient(135deg, #fb923c, var(--orange));
+        }
+
+        .result {
+            margin-top: 12px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            padding: 10px 11px;
+            display: none;
+            font-size: 0.94rem;
+            font-weight: 700;
+        }
+
+        .result.success {
+            background: var(--ok-bg);
+            border-color: #b7ebd4;
+            color: var(--ok-text);
+        }
+
+        .result.error {
+            background: var(--err-bg);
+            border-color: #f3c3c0;
+            color: var(--err-text);
+        }
+
+        .confidence {
+            margin-top: 10px;
+            border-radius: 12px;
+            border: 1px solid #dbe7f5;
+            background: #f8fbff;
+            padding: 10px;
+            display: none;
+        }
+
+        body.dark .confidence {
+            border-color: #2f5578;
+            background: rgba(16, 46, 71, 0.74);
+        }
+
+        .confidence strong {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .confidence.low {
+            border-color: #f5d79b;
+            background: var(--warn-bg);
+            color: var(--warn-text);
+        }
+
+        .why {
+            margin-top: 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(219, 232, 245, 0.85);
+            background: rgba(255, 255, 255, 0.88);
+            padding: 10px;
+        }
+
+        body.dark .why {
+            border-color: #345d82;
+            background: rgba(18, 50, 76, 0.72);
+        }
+
+        .why h4 {
+            margin: 0;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.93rem;
+        }
+
+        .why ul {
+            margin: 8px 0 0;
+            padding-left: 17px;
+            display: grid;
+            gap: 4px;
+            font-size: 0.86rem;
+        }
+
+        .scenario {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .plain-btn {
+            min-height: 44px;
+            border-radius: 10px;
+            border: 1px solid rgba(229, 239, 250, 0.35);
+            background: rgba(8, 33, 53, 0.45);
+            color: #e6f4ff;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.82rem;
+            cursor: pointer;
+        }
+
+        .compare-box {
+            margin-top: 10px;
+            border-radius: 12px;
+            border: 1px dashed rgba(227, 240, 252, 0.52);
+            background: rgba(8, 35, 56, 0.4);
+            padding: 9px;
+            font-size: 0.84rem;
+            color: #d6e9fb;
+        }
+
+        .aside {
+            display: grid;
+            gap: 12px;
+            align-content: start;
+        }
+
+        .aside-card {
+            border-radius: 18px;
+            border: 1px solid rgba(201, 219, 236, 0.85);
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .aside-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .aside-body {
+            padding: 13px;
+        }
+
+        .aside-body h3 {
+            margin: 0;
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+        }
+
+        .aside-body p {
+            margin: 7px 0 0;
+            color: var(--ink-soft);
+            line-height: 1.35;
+            font-size: 0.9rem;
+        }
+
+        .workflow-stack {
+            margin-top: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .workflow-item {
+            border: 1px solid #dce8f5;
+            background: #f8fbff;
+            border-radius: 11px;
+            padding: 8px 9px;
+            display: grid;
+            gap: 3px;
+        }
+
+        .workflow-item strong {
+            font-size: 0.84rem;
+            font-family: 'Sora', sans-serif;
+            color: #1c3f5f;
+        }
+
+        .workflow-item span {
+            font-size: 0.8rem;
+            line-height: 1.32;
+            color: #365875;
+        }
+
+        .workflow-note {
+            margin-top: 10px;
+            border: 1px solid #dce8f5;
+            background: linear-gradient(145deg, #fafdff, #f3f9ff);
+            border-radius: 12px;
+            padding: 9px 10px;
+        }
+
+        .workflow-note h4 {
+            margin: 0;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.84rem;
+            color: #1f4464;
+        }
+
+        .workflow-note p {
+            margin: 6px 0 0;
+            font-size: 0.8rem;
+            line-height: 1.35;
+            color: #345876;
+        }
+
+        .list {
+            margin: 10px 0 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 8px;
+        }
+
+        .list li {
+            background: #f8fbff;
+            border: 1px solid #e3ebf5;
+            border-radius: 10px;
+            padding: 7px 8px;
+            font-size: 0.85rem;
+            color: #32506a;
+        }
+
+        body.dark .list li {
+            background: rgba(16, 44, 67, 0.82);
+            border-color: #315b81;
+            color: #d2e9ff;
+        }
+
+        body.dark .workflow-item {
+            background: rgba(16, 44, 67, 0.82);
+            border-color: #315b81;
+        }
+
+        body.dark .workflow-item strong {
+            color: #e6f3ff;
+        }
+
+        body.dark .workflow-item span {
+            color: #c6deef;
+        }
+
+        body.dark .workflow-note {
+            background: rgba(15, 43, 66, 0.78);
+            border-color: #315b81;
+        }
+
+        body.dark .workflow-note h4 {
+            color: #e6f3ff;
+        }
+
+        body.dark .workflow-note p {
+            color: #c6deef;
+        }
+
+        @media (max-width: 960px) {
+            .hero,
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: unset;
+                padding: 24px;
+                gap: 18px;
+            }
+
+            .hero-gallery {
+                min-height: 420px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .field-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 22px 16px;
+            }
+
+            .model-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .scenario {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-gallery {
+                min-height: 380px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="app">
+        <section class="hero">
+            <div class="hero-left">
+                <div class="brand-row">
+                    <img src="/static/assets/logo.svg" alt="App logo">
+                    <div class="brand-title">EngageVision Studio</div>
+                </div>
+                <h1>Instagram Engagement Predictor</h1>
+                <p>Estimate expected engagement rate before posting. Compare XGBoost and Random Forest predictions with a clean, production-style interface.</p>
+                
+                <div class="kpi-card" id="kpiCard" aria-live="polite">
+                    <div class="kpi-title">Top-left KPI prediction</div>
+                    <div class="kpi-value" id="kpiValue">--</div>
+                    <div class="kpi-sub">
+                        <div id="kpiModel">Model: --</div>
+                        <div id="kpiConfidence">Confidence: --</div>
+                    </div>
+                </div>
+
+                <div class="hero-pills">
+                    <span class="pill">ML-powered scoring</span>
+                    <span class="pill">Two-model comparison</span>
+                    <span class="pill">Structured feature input</span>
+                </div>
+            </div>
+
+            <!-- Modern Auto-Changing Image Gallery -->
+            <div class="hero-gallery">
+                <div class="hero-slides" id="heroSlides">
+                    <div class="hero-slide active"><img src="/static/assets/img_1.jpg" alt="Instagram preview 1"></div>
+                    <div class="hero-slide"><img src="/static/assets/img_2.jpg" alt="Instagram preview 2"></div>
+                    <div class="hero-slide"><img src="/static/assets/img_3.jpg" alt="Instagram preview 3"></div>
+                    <div class="hero-slide"><img src="/static/assets/img_4.jpg" alt="Instagram preview 4"></div>
+                    <div class="hero-slide"><img src="/static/assets/img_5.jpg" alt="Instagram preview 5"></div>
+                    <div class="hero-slide"><img src="/static/assets/img_7.jpg" alt="Instagram preview 6"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="workspace">
+            <section class="panel">
+                <div class="panel-head">
+                    <h2>Enter Post Metrics</h2>
+                    <p>Fill all required features and choose the model for prediction.</p>
+                </div>
+                <div class="top-controls">
+                    <button type="button" class="chip-btn" id="sampleBtn1">Load Sample A</button>
+                    <button type="button" class="chip-btn" id="sampleBtn2">Load Sample B</button>
+                    <button type="button" class="chip-btn" id="sampleBtn3">Load Sample C</button>
+                    <button type="button" class="chip-btn" id="sampleBtn4">Load Sample D</button>
+                </div>
+                <form id="predictForm">
+                    <div class="field-grid">
+                    <div class="field">
+                        <label for="media_type">Media Type</label>
+                        <select id="media_type" name="media_type" required title="Instagram media type">
+                            <option value="Carousel">Carousel</option>
+                            <option value="Video">Video</option>
+                            <option value="Reel">Reel</option>
+                            <option value="Photo">Photo</option>
+                        </select>
+                        <div class="hint">Choose the post format</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="likes">Likes</label>
+                        <input id="likes" type="number" step="any" name="likes" required placeholder="e.g. 12000" title="Post likes">
+                        <div class="hint">Number of likes</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="comments">Comments</label>
+                        <input id="comments" type="number" step="any" name="comments" required placeholder="e.g. 2000" title="Post comments">
+                        <div class="hint">Number of comments</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="shares">Shares</label>
+                        <input id="shares" type="number" step="any" name="shares" required placeholder="e.g. 1000" title="Post shares">
+                        <div class="hint">Number of shares</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="saves">Saves</label>
+                        <input id="saves" type="number" step="any" name="saves" required placeholder="e.g. 3000" title="Post saves">
+                        <div class="hint">Number of saves</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="reach">Reach</label>
+                        <input id="reach" type="number" step="any" name="reach" required placeholder="e.g. 200000" title="Post reach">
+                        <div class="hint">Unique accounts reached</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="impressions">Impressions</label>
+                        <input id="impressions" type="number" step="any" name="impressions" required placeholder="e.g. 250000" title="Post impressions">
+                        <div class="hint">Total impressions</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="caption_length">Caption Length</label>
+                        <input id="caption_length" type="number" step="any" name="caption_length" required placeholder="e.g. 120" title="Caption length">
+                        <div class="slider-row">
+                            <input id="caption_slider" type="range" min="0" max="2500" step="1" value="120">
+                            <span class="slider-val" id="captionVal">120</span>
+                        </div>
+                        <div class="hint">Caption character length</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="hashtags_count">Hashtags Count</label>
+                        <input id="hashtags_count" type="number" step="any" name="hashtags_count" required placeholder="e.g. 15" title="Hashtag count">
+                        <div class="slider-row">
+                            <input id="hashtags_slider" type="range" min="0" max="40" step="1" value="15">
+                            <span class="slider-val" id="hashtagsVal">15</span>
+                        </div>
+                        <div class="hint">Number of hashtags used</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="followers_gained">Followers Gained</label>
+                        <input id="followers_gained" type="number" step="any" name="followers_gained" required placeholder="e.g. 50" title="Followers gained">
+                        <div class="hint">Followers gained from the post window</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="share_rate">Share Rate</label>
+                        <input id="share_rate" type="number" step="any" name="share_rate" required placeholder="e.g. 0.4" title="Share rate">
+                        <div class="hint">Use your dataset value</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="save_rate">Save Rate</label>
+                        <input id="save_rate" type="number" step="any" name="save_rate" required placeholder="e.g. 1.2" title="Save rate">
+                        <div class="hint">Use your dataset value</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="engagement_score">Engagement Score</label>
+                        <input id="engagement_score" type="number" step="any" name="engagement_score" required placeholder="e.g. 56000" title="Engagement score">
+                        <div class="hint">Use the dataset engagement score</div>
+                    </div>
+
+                    <div class="field full">
+                        <label for="traffic_source">Traffic Source</label>
+                        <select id="traffic_source" name="traffic_source" required title="Traffic source">
+                            <option value="Home Feed">Home Feed</option>
+                            <option value="Hashtags">Hashtags</option>
+                            <option value="Reels Feed">Reels Feed</option>
+                            <option value="External">External</option>
+                            <option value="Profile">Profile</option>
+                            <option value="Explore" selected>Explore</option>
+                        </select>
+                        <div class="hint">Choose where traffic came from</div>
+                    </div>
+
+                    <div class="field full">
+                        <label for="content_category">Content Category</label>
+                        <select id="content_category" name="content_category" required title="Content category">
+                            <option value="Photography">Photography</option>
+                            <option value="Fashion">Fashion</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Lifestyle">Lifestyle</option>
+                            <option value="Food">Food</option>
+                            <option value="Fitness" selected>Fitness</option>
+                            <option value="Music">Music</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Beauty">Beauty</option>
+                            <option value="Comedy">Comedy</option>
+                        </select>
+                        <div class="hint">Select your post category</div>
+                    </div>
+                    </div>
+
+                    <details class="adv-block">
+                        <summary>More Options</summary>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoPredictToggle">
+                            <span>Live predict while sliding</span>
+                        </label>
+                        <div class="hint">Hyper-parameters are fixed by trained artifacts. This toggle controls live UI behavior only.</div>
+                        <div class="sample-box">
+                            <button type="button" class="plain-btn" id="saveScenarioA">Save as Scenario A</button>
+                            <button type="button" class="plain-btn" id="saveScenarioB">Save as Scenario B</button>
+                            <button type="button" class="plain-btn" id="compareScenarios">Compare A vs B</button>
+                        </div>
+                        <div class="compare-box" id="compareBox">Scenario comparison will appear here.</div>
+                    </details>
+
+                    <div class="model-actions">
+                        <button type="submit" class="model-btn xgb" data-model="xgboost">Predict with XGBoost</button>
+                        <button type="submit" class="model-btn xgb" data-model="random_forest">Predict with Random Forest</button>
+                    </div>
+                </form>
+                <div class="result" id="result"></div>
+                <div class="confidence" id="confidenceBox"></div>
+                <div class="why" id="whyBox">
+                    <h4>Why this result?</h4>
+                    <ul id="whyList">
+                        <li>Run a prediction to see feature influence hints.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <aside class="aside">
+                <article class="aside-card">
+                    <img src="/static/assets/img_5.jpg" alt="Growth visual">
+                    <div class="aside-body">
+                        <h3>User Tips</h3>
+                        <p>Use buttons “Load Sample A/B” to test instantly without typing every field.</p>
+                        <ul class="list">
+                            <li>Sample A: Reel / Home Feed / Technology</li>
+                            <li>Sample B: Carousel / Explore / Food</li>
+                            <li>Keep rates realistic to improve confidence</li>
+                        </ul>
+                    </div>
+                </article>
+                
+                <article class="aside-card">
+                    <img src="/static/assets/img_6.jpg" alt="Engagement growth visual">
+                    <div class="aside-body">
+                        <h3>Prediction Workflow</h3>
+                        <p>The scoring engine follows a transparent pipeline so you can trace why confidence shifts and how the final value is produced.</p>
+                        <div class="workflow-stack">
+                            <div class="workflow-item">
+                                <strong>1. Feature intake and sanitation</strong>
+                                <span>Checks required fields, removes invalid numeric values, and standardizes category tokens.</span>
+                            </div>
+                            <div class="workflow-item">
+                                <strong>2. Distribution-aware preprocessing</strong>
+                                <span>Applies trained transformations so live inputs match the feature scale used during training.</span>
+                            </div>
+                            <div class="workflow-item">
+                                <strong>3. Dual-model inference pass</strong>
+                                <span>Runs XGBoost and Random Forest in parallel to produce independent engagement estimates.</span>
+                            </div>
+                            <div class="workflow-item">
+                                <strong>4. Agreement and spread analysis</strong>
+                                <span>Measures distance between models and classifies the result as tight, moderate, or divergent.</span>
+                            </div>
+                            <div class="workflow-item">
+                                <strong>5. Feature influence explanation</strong>
+                                <span>Ranks the strongest positive and negative drivers to support result interpretation.</span>
+                            </div>
+                        </div>
+                        <div class="workflow-note">
+                            <h4>Operational confidence bands</h4>
+                            <p>High confidence typically reflects aligned model outputs and in-range features. Lower confidence indicates model spread or feature drift and should trigger manual review.</p>
+                        </div>
+                        <ul class="list">
+                            <li>Output packet: predicted rate, agreement score, and quality status</li>
+                            <li>Warnings are shown when values exceed practical training ranges</li>
+                            <li>Use A vs B compare mode to test scenario sensitivity quickly</li>
+                        </ul>
+                    </div>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <script>
+        // === HERO AUTO SLIDESHOW ===
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+
+        function showNextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Start auto carousel - changes every 4 seconds
+        setInterval(showNextSlide, 4000);
+
+        let selectedModel = 'xgboost';
+        let scenarioA = null;
+        let scenarioB = null;
+        let predictionLock = false;
+        let autoTimer = null;
+
+        const SAMPLE_A = {
+            media_type: 'Reel',
+            likes: 31627,
+            comments: 7559,
+            shares: 4530,
+            saves: 6393,
+            reach: 615036,
+            impressions: 1007750,
+            caption_length: 1340,
+            hashtags_count: 3,
+            followers_gained: 899,
+            traffic_source: 'Home Feed',
+            content_category: 'Technology',
+            share_rate: 0.007365423,
+            save_rate: 0.01039451349,
+            engagement_score: 85907,
+        };
+
+        const SAMPLE_B = {
+            media_type: 'Carousel',
+            likes: 193906,
+            comments: 6326,
+            shares: 4384,
+            saves: 5581,
+            reach: 277864,
+            impressions: 690698,
+            caption_length: 904,
+            hashtags_count: 21,
+            followers_gained: 701,
+            traffic_source: 'Explore',
+            content_category: 'Food',
+            share_rate: 0.01577750266,
+            save_rate: 0.0200853655,
+            engagement_score: 242034,
+        };
+
+        const SAMPLE_C = {
+            media_type: 'Post',
+            likes: 45112,
+            comments: 2834,
+            shares: 1256,
+            saves: 3891,
+            reach: 389200,
+            impressions: 621508,
+            caption_length: 456,
+            hashtags_count: 8,
+            followers_gained: 342,
+            traffic_source: 'Feed',
+            content_category: 'Fashion',
+            share_rate: 0.00562189,
+            save_rate: 0.01742816,
+            engagement_score: 142567,
+        };
+
+        const SAMPLE_D = {
+            media_type: 'Reel',
+            likes: 128654,
+            comments: 8923,
+            shares: 6245,
+            saves: 9134,
+            reach: 512890,
+            impressions: 1234567,
+            caption_length: 782,
+            hashtags_count: 12,
+            followers_gained: 1203,
+            traffic_source: 'Explore',
+            content_category: 'Fitness',
+            share_rate: 0.01245678,
+            save_rate: 0.01856234,
+            engagement_score: 198456,
+        };
+
+        const fieldWeights = {
+            likes: 0.29,
+            impressions: 0.24,
+            engagement_score: 0.19,
+            comments: 0.11,
+            saves: 0.07,
+            hashtags_count: 0.05,
+            share_rate: 0.03,
+            save_rate: 0.02,
+        };
+
+        const normalizers = {
+            likes: 200000,
+            impressions: 2500000,
+            engagement_score: 300000,
+            comments: 10000,
+            saves: 12000,
+            hashtags_count: 30,
+            share_rate: 0.05,
+            save_rate: 0.05,
+        };
+
+        const rangeCheck = {
+            likes: [0, 250000],
+            comments: [0, 15000],
+            shares: [0, 12000],
+            saves: [0, 15000],
+            reach: [1000, 2500000],
+            impressions: [1000, 3000000],
+            caption_length: [0, 3000],
+            hashtags_count: [0, 40],
+            followers_gained: [0, 30000],
+            share_rate: [0, 2],
+            save_rate: [0, 2],
+            engagement_score: [0, 350000],
+        };
+
+        const resultDiv = document.getElementById('result');
+        const confidenceBox = document.getElementById('confidenceBox');
+        const whyList = document.getElementById('whyList');
+        const kpiValue = document.getElementById('kpiValue');
+        const kpiModel = document.getElementById('kpiModel');
+        const kpiConfidence = document.getElementById('kpiConfidence');
+        const compareBox = document.getElementById('compareBox');
+
+        function clamp(val, min, max) {
+            return Math.max(min, Math.min(max, val));
+        }
+
+        function syncSlider(inputId, sliderId, valueId) {
+            const input = document.getElementById(inputId);
+            const slider = document.getElementById(sliderId);
+            const value = document.getElementById(valueId);
+
+            const syncFromInput = () => {
+                const n = Number.parseFloat(input.value || '0');
+                slider.value = String(clamp(Number.isFinite(n) ? n : 0, Number.parseFloat(slider.min), Number.parseFloat(slider.max)));
+                value.textContent = String(Math.round(Number.parseFloat(slider.value)));
+                maybeAutoPredict();
+            };
+
+            const syncFromSlider = () => {
+                input.value = slider.value;
+                value.textContent = slider.value;
+                maybeAutoPredict();
+            };
+
+            input.addEventListener('input', syncFromInput);
+            slider.addEventListener('input', syncFromSlider);
+            syncFromInput();
+        }
+
+        function setDarkMode(enabled) {
+            document.body.classList.toggle('dark', enabled);
+            localStorage.setItem('engagevision-dark-mode', enabled ? '1' : '0');
+        }
+
+        function readFormData() {
+            const form = document.getElementById('predictForm');
+            return {
+                media_type: form.media_type.value,
+                likes: Number.parseFloat(form.likes.value),
+                comments: Number.parseFloat(form.comments.value),
+                shares: Number.parseFloat(form.shares.value),
+                saves: Number.parseFloat(form.saves.value),
+                reach: Number.parseFloat(form.reach.value),
+                impressions: Number.parseFloat(form.impressions.value),
+                caption_length: Number.parseFloat(form.caption_length.value),
+                hashtags_count: Number.parseFloat(form.hashtags_count.value),
+                followers_gained: Number.parseFloat(form.followers_gained.value),
+                traffic_source: form.traffic_source.value,
+                content_category: form.content_category.value,
+                share_rate: Number.parseFloat(form.share_rate.value),
+                save_rate: Number.parseFloat(form.save_rate.value),
+                engagement_score: Number.parseFloat(form.engagement_score.value),
+            };
+        }
+
+        function fillForm(data) {
+            const form = document.getElementById('predictForm');
+            Object.entries(data).forEach(([k, v]) => {
+                if (form[k]) {
+                    form[k].value = v;
+                }
+            });
+            document.getElementById('caption_slider').value = String(data.caption_length);
+            document.getElementById('hashtags_slider').value = String(data.hashtags_count);
+            document.getElementById('captionVal').textContent = String(data.caption_length);
+            document.getElementById('hashtagsVal').textContent = String(data.hashtags_count);
+        }
+
+        function getExplainability(data) {
+            const points = Object.entries(fieldWeights).map(([key, w]) => {
+                let base = data[key] / normalizers[key];
+                if (key === 'hashtags_count') {
+                    const dist = Math.abs(data.hashtags_count - 12);
+                    base = clamp(1 - dist / 16, 0, 1);
+                }
+                return {
+                    key,
+                    score: clamp(base, 0, 2) * w,
+                };
+            });
+            return points.sort((a, b) => b.score - a.score).slice(0, 3);
+        }
+
+        function computeConfidence(xgbValue, rfValue, data) {
+            const diff = Math.abs(xgbValue - rfValue);
+            let confidence = 100 - diff * 6.5;
+
+            Object.entries(rangeCheck).forEach(([key, range]) => {
+                const val = data[key];
+                if (val < range[0] || val > range[1]) {
+                    confidence -= 7;
+                }
+            });
+
+            return clamp(Math.round(confidence), 40, 99);
+        }
+
+        async function predictBoth(data) {
+            const [xgbResp, rfResp] = await Promise.all([
+                fetch('/predict/xgboost', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                }),
+                fetch('/predict/random_forest', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                }),
+            ]);
+
+            const xgb = await xgbResp.json();
+            const rf = await rfResp.json();
+
+            if (!xgbResp.ok) {
+                throw new Error(xgb.detail || xgb.error || 'XGBoost request failed');
+            }
+            if (!rfResp.ok) {
+                throw new Error(rf.detail || rf.error || 'Random Forest request failed');
+            }
+
+            return {
+                xgb: Number(xgb.predicted_engagement),
+                rf: Number(rf.predicted_engagement),
+            };
+        }
+
+        function renderExplainability(data) {
+            const top = getExplainability(data);
+            const labels = {
+                likes: 'likes',
+                impressions: 'impressions',
+                engagement_score: 'engagement_score',
+                comments: 'comments',
+                saves: 'saves',
+                hashtags_count: 'hashtags_count',
+                share_rate: 'share_rate',
+                save_rate: 'save_rate',
+            };
+            whyList.innerHTML = '';
+            top.forEach((item) => {
+                const li = document.createElement('li');
+                li.textContent = `${labels[item.key]} showed high influence in this scenario.`;
+                whyList.appendChild(li);
+            });
+        }
+
+        function renderScenarioComparison() {
+            if (!scenarioA || !scenarioB) {
+                compareBox.textContent = 'Save Scenario A and B, then compare to see which draft is preferred.';
+                return;
+            }
+            const winner = scenarioA.prediction >= scenarioB.prediction ? 'A' : 'B';
+            const delta = Math.abs(scenarioA.prediction - scenarioB.prediction);
+            compareBox.textContent = `Scenario ${winner} is predicted higher by ${delta.toFixed(4)} points (${scenarioA.model.toUpperCase()} vs ${scenarioB.model.toUpperCase()} saved predictions).`;
+        }
+
+        function renderPrediction(displayValue, modelLabel, confidence, xgb, rf) {
+            const low = confidence < 65;
+            const lowPrefix = low ? '⚠ Low confidence' : '▲ High confidence';
+
+            resultDiv.className = 'result success';
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = `${modelLabel} Predicted Engagement: ${displayValue.toFixed(4)}`;
+
+            confidenceBox.className = low ? 'confidence low' : 'confidence';
+            confidenceBox.style.display = 'block';
+            if (low) {
+                const minV = Math.min(xgb, rf).toFixed(4);
+                const maxV = Math.max(xgb, rf).toFixed(4);
+                confidenceBox.innerHTML = `<strong>${lowPrefix}</strong> (${confidence}%). Suggested range: ${minV} to ${maxV}.`;
+            } else {
+                confidenceBox.innerHTML = `<strong>${lowPrefix}</strong> (${confidence}%). Model agreement is healthy.`;
+            }
+
+            kpiValue.textContent = displayValue.toFixed(4);
+            kpiModel.textContent = `Model: ${modelLabel}`;
+            kpiConfidence.textContent = `Confidence: ${confidence}%`;
+        }
+
+        async function runPrediction() {
+            if (predictionLock) {
+                return;
+            }
+            predictionLock = true;
+
+            resultDiv.className = 'result';
+            resultDiv.style.display = 'none';
+            confidenceBox.style.display = 'none';
+
+            try {
+                const data = readFormData();
+                const both = await predictBoth(data);
+                const selectedValue = selectedModel === 'random_forest' ? both.rf : both.xgb;
+                const modelLabel = selectedModel === 'random_forest' ? 'RANDOM FOREST' : 'XGBOOST';
+                const confidence = computeConfidence(both.xgb, both.rf, data);
+
+                renderPrediction(selectedValue, modelLabel, confidence, both.xgb, both.rf);
+                renderExplainability(data);
+            } catch (err) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `Error: ${err.message}`;
+                resultDiv.style.display = 'block';
+            } finally {
+                predictionLock = false;
+            }
+        }
+
+        function maybeAutoPredict() {
+            if (!document.getElementById('autoPredictToggle').checked) {
+                return;
+            }
+            clearTimeout(autoTimer);
+            autoTimer = setTimeout(() => {
+                const form = document.getElementById('predictForm');
+                if (form.checkValidity()) {
+                    runPrediction();
+                }
+            }, 220);
+        }
+
+        document.querySelectorAll('.model-btn').forEach((btn) => {
+            btn.addEventListener('click', function () {
+                selectedModel = this.dataset.model || 'xgboost';
+            });
+        });
+
+        document.getElementById('sampleBtn1').addEventListener('click', () => {
+            fillForm(SAMPLE_A);
+            maybeAutoPredict();
+        });
+
+        document.getElementById('sampleBtn2').addEventListener('click', () => {
+            fillForm(SAMPLE_B);
+            maybeAutoPredict();
+        });
+
+        document.getElementById('sampleBtn3').addEventListener('click', () => {
+            fillForm(SAMPLE_C);
+            maybeAutoPredict();
+        });
+
+        document.getElementById('sampleBtn4').addEventListener('click', () => {
+            fillForm(SAMPLE_D);
+            maybeAutoPredict();
+        });
+
+        document.getElementById('saveScenarioA').addEventListener('click', () => {
+            const value = Number.parseFloat(kpiValue.textContent);
+            scenarioA = {
+                data: readFormData(),
+                prediction: Number.isFinite(value) ? value : 0,
+                model: selectedModel,
+            };
+            renderScenarioComparison();
+        });
+
+        document.getElementById('saveScenarioB').addEventListener('click', () => {
+            const value = Number.parseFloat(kpiValue.textContent);
+            scenarioB = {
+                data: readFormData(),
+                prediction: Number.isFinite(value) ? value : 0,
+                model: selectedModel,
+            };
+            renderScenarioComparison();
+        });
+
+        document.getElementById('compareScenarios').addEventListener('click', renderScenarioComparison);
+
+        syncSlider('caption_length', 'caption_slider', 'captionVal');
+        syncSlider('hashtags_count', 'hashtags_slider', 'hashtagsVal');
+
+        const savedDark = localStorage.getItem('engagevision-dark-mode');
+        if (savedDark === '1') {
+            setDarkMode(true);
+        }
+
+        renderScenarioComparison();
+
+        document.getElementById('predictForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            await runPrediction();
+        });
+    </script>
+</body>
+</html>
