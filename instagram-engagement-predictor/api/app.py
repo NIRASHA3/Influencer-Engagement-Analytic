@@ -6,6 +6,7 @@ from pydantic import BaseModel
 import joblib
 import pandas as pd
 from pathlib import Path
+import json
 
 # ===============================
 # Load trained ML models
@@ -13,6 +14,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = BASE_DIR.parent
 STATIC_DIR = BASE_DIR / "static"
+REPORTS_DIR = PROJECT_DIR / "reports"
 
 
 def find_existing_model_path(candidates: list[str], model_label: str) -> Path:
@@ -61,6 +63,47 @@ models = {
     ),
 }
 
+
+def load_feature_importance_report() -> list[dict]:
+    """Load feature importance rows from reports if available."""
+    path = REPORTS_DIR / "feature_importance.csv"
+    if not path.exists():
+        return []
+
+    try:
+        frame = pd.read_csv(path)
+        if "feature" not in frame.columns or "importance" not in frame.columns:
+            return []
+
+        frame = frame.sort_values("importance", ascending=False)
+        return [
+            {
+                "feature": str(row["feature"]),
+                "importance": float(row["importance"]),
+            }
+            for _, row in frame.iterrows()
+        ]
+    except Exception:
+        return []
+
+
+def load_model_comparison_report() -> dict:
+    """Load model comparison metrics from reports if available."""
+    path = REPORTS_DIR / "model_comparison_summary.json"
+    if not path.exists():
+        return {}
+
+    try:
+        with path.open("r", encoding="utf-8") as report_file:
+            raw = json.load(report_file)
+        return raw if isinstance(raw, dict) else {}
+    except Exception:
+        return {}
+
+
+FEATURE_IMPORTANCE_REPORT = load_feature_importance_report()
+MODEL_COMPARISON_REPORT = load_model_comparison_report()
+
 FEATURE_COLUMNS = [
     "media_type",
     "likes",
@@ -91,9 +134,34 @@ app = FastAPI(title="Instagram Engagement Predictor")
 # ===============================
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    return FileResponse(
+        STATIC_DIR / "assets" / "logo.svg",
+        media_type="image/svg+xml",
+    )
+
+
 @app.get("/")
 def read_index():
     return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.head("/", include_in_schema=False)
+def read_index_head():
+    # Return a simple successful HEAD response for uptime checks and probes.
+    return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/insights", include_in_schema=False)
+def read_insights():
+    """Provide training-derived model insights for decision-support UI widgets."""
+    return {
+        "best_model": MODEL_COMPARISON_REPORT.get("best_model", "xgboost"),
+        "model_comparison": MODEL_COMPARISON_REPORT,
+        "feature_importance": FEATURE_IMPORTANCE_REPORT,
+    }
 
 
 def build_model_input(d: dict) -> pd.DataFrame:

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram Engagement Predictor</title>
+    <link rel="icon" type="image/svg+xml" href="/static/assets/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -243,6 +244,7 @@
             display: grid;
             grid-template-columns: 1.2fr 0.8fr;
             gap: 18px;
+            align-items: start;
         }
 
         .panel {
@@ -551,9 +553,216 @@
             color: #d6e9fb;
         }
 
-        .aside {
+        .decision-grid {
+            margin-top: 16px;
             display: grid;
             gap: 12px;
+        }
+
+        .decision-card {
+            border-radius: 14px;
+            border: 1px solid rgba(219, 232, 245, 0.85);
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(245, 251, 255, 0.9));
+            padding: 12px;
+        }
+
+        body.dark .decision-card {
+            border-color: #345d82;
+            background: rgba(18, 50, 76, 0.72);
+        }
+
+        .decision-card h4 {
+            margin: 0;
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.1px;
+        }
+
+        .dual-model {
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .dual-pill {
+            border-radius: 10px;
+            border: 1px solid #d9e8f7;
+            background: #f8fbff;
+            padding: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1d4868;
+        }
+
+        body.dark .dual-pill {
+            border-color: #315b81;
+            background: rgba(16, 44, 67, 0.82);
+            color: #e6f3ff;
+        }
+
+        .risk-line {
+            margin-top: 8px;
+            font-size: 0.88rem;
+            line-height: 1.35;
+            color: var(--ink-soft);
+        }
+
+        .risk-badge {
+            display: inline-block;
+            margin-top: 8px;
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            border: 1px solid #d9e8f7;
+            background: #f8fbff;
+            color: #2a5371;
+        }
+
+        .risk-badge.low {
+            background: #eafaf3;
+            border-color: #b7ebd4;
+            color: #0f6b42;
+        }
+
+        .risk-badge.medium {
+            background: #fff7e8;
+            border-color: #f5d79b;
+            color: #9a5d00;
+        }
+
+        .risk-badge.high {
+            background: #fef2f2;
+            border-color: #f3c3c0;
+            color: #b42318;
+        }
+
+        .score-grid {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .score-item {
+            border-radius: 10px;
+            border: 1px solid #d9e8f7;
+            background: #f8fbff;
+            padding: 9px;
+            font-size: 0.82rem;
+        }
+
+        body.dark .score-item {
+            border-color: #315b81;
+            background: rgba(16, 44, 67, 0.82);
+        }
+
+        .score-item strong {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--ink-soft);
+            margin-bottom: 5px;
+        }
+
+        .score-item span {
+            display: block;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #143954;
+            line-height: 1.2;
+        }
+
+        body.dark .score-item span {
+            color: #e6f3ff;
+        }
+
+        .approval-meter {
+            margin-top: 10px;
+            border: 1px solid #d9e8f7;
+            border-radius: 12px;
+            background: #f8fbff;
+            padding: 10px;
+        }
+
+        body.dark .approval-meter {
+            border-color: #315b81;
+            background: rgba(16, 44, 67, 0.82);
+        }
+
+        .approval-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .approval-score {
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #143954;
+        }
+
+        body.dark .approval-score {
+            color: #e6f3ff;
+        }
+
+        .approval-track {
+            margin-top: 8px;
+            height: 10px;
+            border-radius: 999px;
+            background: #dce8f5;
+            overflow: hidden;
+        }
+
+        body.dark .approval-track {
+            background: rgba(49, 91, 129, 0.7);
+        }
+
+        .approval-fill {
+            width: 0%;
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #f59e0b, #22c55e);
+            transition: width 0.25s ease;
+        }
+
+        .goal-row {
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+        }
+
+        .goal-row input {
+            border: 1px solid #d9e8f7;
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 0.9rem;
+            background: #ffffff;
+            color: #10283c;
+        }
+
+        body.dark .goal-row input {
+            color: #e9f4ff;
+            background: rgba(14, 43, 66, 0.9);
+            border-color: rgba(71, 113, 148, 0.86);
+        }
+
+        .mini-list {
+            margin: 10px 0 0;
+            padding-left: 18px;
+            display: grid;
+            gap: 6px;
+            font-size: 0.88rem;
+            line-height: 1.4;
+        }
+
+        .aside {
+            display: grid;
+            gap: 14px;
             align-content: start;
         }
 
@@ -567,26 +776,26 @@
 
         .aside-card img {
             width: 100%;
-            height: 220px;
+            height: 200px;
             object-fit: cover;
             display: block;
         }
 
         .aside-body {
-            padding: 13px;
+            padding: 16px;
         }
 
         .aside-body h3 {
             margin: 0;
             font-family: 'Sora', sans-serif;
-            font-size: 1rem;
+            font-size: 1.08rem;
         }
 
         .aside-body p {
-            margin: 7px 0 0;
+            margin: 9px 0 0;
             color: var(--ink-soft);
-            line-height: 1.35;
-            font-size: 0.9rem;
+            line-height: 1.5;
+            font-size: 0.93rem;
         }
 
         .workflow-stack {
@@ -599,21 +808,65 @@
             border: 1px solid #dce8f5;
             background: #f8fbff;
             border-radius: 11px;
-            padding: 8px 9px;
+            padding: 10px 11px;
             display: grid;
-            gap: 3px;
+            gap: 4px;
         }
 
         .workflow-item strong {
-            font-size: 0.84rem;
+            font-size: 0.88rem;
             font-family: 'Sora', sans-serif;
             color: #1c3f5f;
         }
 
         .workflow-item span {
-            font-size: 0.8rem;
-            line-height: 1.32;
+            font-size: 0.86rem;
+            line-height: 1.45;
             color: #365875;
+        }
+
+        .decision-ladder {
+            margin-top: 11px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .ladder-item {
+            border: 1px solid #dce8f5;
+            background: #f8fbff;
+            border-radius: 11px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.86rem;
+            color: #274a66;
+        }
+
+        .status-chip {
+            border-radius: 999px;
+            padding: 3px 9px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .status-chip.go {
+            background: #eafaf3;
+            color: #0f6b42;
+            border: 1px solid #b7ebd4;
+        }
+
+        .status-chip.pilot {
+            background: #fff7e8;
+            color: #9a5d00;
+            border: 1px solid #f5d79b;
+        }
+
+        .status-chip.hold {
+            background: #fef2f2;
+            color: #b42318;
+            border: 1px solid #f3c3c0;
         }
 
         .workflow-note {
@@ -650,9 +903,22 @@
             background: #f8fbff;
             border: 1px solid #e3ebf5;
             border-radius: 10px;
-            padding: 7px 8px;
-            font-size: 0.85rem;
+            padding: 9px 10px;
+            font-size: 0.88rem;
+            line-height: 1.35;
             color: #32506a;
+        }
+
+        .recommendation-go {
+            color: #0f6b42 !important;
+        }
+
+        .recommendation-pilot {
+            color: #9a5d00 !important;
+        }
+
+        .recommendation-hold {
+            color: #b42318 !important;
         }
 
         body.dark .list li {
@@ -685,6 +951,12 @@
 
         body.dark .workflow-note p {
             color: #c6deef;
+        }
+
+        body.dark .ladder-item {
+            background: rgba(16, 44, 67, 0.82);
+            border-color: #315b81;
+            color: #d2e9ff;
         }
 
         @media (max-width: 960px) {
@@ -778,6 +1050,7 @@
                     <button type="button" class="chip-btn" id="sampleBtn2">Load Sample B</button>
                     <button type="button" class="chip-btn" id="sampleBtn3">Load Sample C</button>
                     <button type="button" class="chip-btn" id="sampleBtn4">Load Sample D</button>
+                    <button type="button" class="chip-btn" id="sampleBtn5">Load Sample E</button>
                 </div>
                 <form id="predictForm">
                     <div class="field-grid">
@@ -931,6 +1204,69 @@
                         <li>Run a prediction to see feature influence hints.</li>
                     </ul>
                 </div>
+
+                <section class="decision-grid">
+                    <article class="decision-card">
+                        <h4>Dual-Model Decision Panel</h4>
+                        <div class="dual-model">
+                            <div class="dual-pill" id="xgbPanel">XGBoost: --</div>
+                            <div class="dual-pill" id="rfPanel">Random Forest: --</div>
+                        </div>
+                        <div class="risk-line" id="agreementLine">Agreement gap: --</div>
+                        <span class="risk-badge" id="riskBadge">Risk: --</span>
+                        <ul class="mini-list" id="riskReasons">
+                            <li>Run prediction to evaluate risk.</li>
+                        </ul>
+                    </article>
+
+                    <article class="decision-card">
+                        <h4>Brand Promotion Scorecard</h4>
+                        <div class="goal-row">
+                            <input id="promotionCost" type="number" step="any" min="0" placeholder="Promotion cost (e.g. 1000)">
+                            <button type="button" class="plain-btn" id="scorecardBtn">Update Scorecard</button>
+                        </div>
+                        <div class="score-grid">
+                            <div class="score-item"><strong>Expected engaged users</strong><span id="engagedUsers">--</span></div>
+                            <div class="score-item"><strong>Estimated cost per engaged user</strong><span id="cpeValue">--</span></div>
+                            <div class="score-item"><strong>Efficiency index</strong><span id="efficiencyValue">--</span></div>
+                            <div class="score-item"><strong>Recommendation</strong><span id="recommendationValue">--</span></div>
+                        </div>
+                    </article>
+
+                    <article class="decision-card">
+                        <h4>Campaign Approval Meter</h4>
+                        <div class="approval-meter">
+                            <div class="approval-head">
+                                <span class="approval-score" id="approvalScore">Approval Score: --</span>
+                                <span class="status-chip pilot" id="approvalStatus">PENDING</span>
+                            </div>
+                            <div class="approval-track">
+                                <div class="approval-fill" id="approvalFill"></div>
+                            </div>
+                        </div>
+                        <ul class="mini-list" id="approvalNotes">
+                            <li>Run prediction to generate campaign approval signal.</li>
+                        </ul>
+                    </article>
+
+                    <article class="decision-card">
+                        <h4>Goal-Seeking Planner</h4>
+                        <div class="goal-row">
+                            <input id="targetEngagement" type="number" step="any" min="0" placeholder="Target engagement (e.g. 12.5)">
+                            <button type="button" class="plain-btn" id="goalSeekBtn">Suggest Actions</button>
+                        </div>
+                        <ul class="mini-list" id="goalAdviceList">
+                            <li>Set a target and run suggestion after prediction.</li>
+                        </ul>
+                    </article>
+
+                    <article class="decision-card">
+                        <h4>Training Insights Snapshot</h4>
+                        <ul class="mini-list" id="trainingInsightList">
+                            <li>Loading model insights from training reports...</li>
+                        </ul>
+                    </article>
+                </section>
             </section>
 
             <aside class="aside">
@@ -985,6 +1321,46 @@
                         </ul>
                     </div>
                 </article>
+
+                <article class="aside-card">
+                    <img src="/static/assets/img_3.jpg" alt="Decision planning visual">
+                    <div class="aside-body">
+                        <h3>Decision Playbook</h3>
+                        <p>Translate model output into fast campaign decisions using three clear gates: stability, risk, and unit economics.</p>
+                        <div class="workflow-stack">
+                            <div class="workflow-item">
+                                <strong>1. Stability gate</strong>
+                                <span>Review model agreement gap. Lower spread indicates more stable forecasts and stronger decision confidence.</span>
+                            </div>
+                            <div class="workflow-item">
+                                <strong>2. Risk gate</strong>
+                                <span>Use the risk badge from the Decision Panel. High risk should trigger manual review before budget allocation.</span>
+                            </div>
+                            <div class="workflow-item">
+                                <strong>3. Economics gate</strong>
+                                <span>Compare CPE and Efficiency Index in the Scorecard. Prioritize scenarios with lower CPE and stronger efficiency.</span>
+                            </div>
+                            <div class="workflow-item">
+                                <strong>4. Optimization gate</strong>
+                                <span>Use Goal-Seeking suggestions to adjust creative inputs and rerun Scenario A vs B before final sign-off.</span>
+                            </div>
+                        </div>
+                        <div class="decision-ladder">
+                            <div class="ladder-item"><span class="status-chip go">GO</span> Low risk and acceptable CPE. Approve influencer for promotion.</div>
+                            <div class="ladder-item"><span class="status-chip pilot">PILOT</span> Medium risk or moderate CPE. Run a small-budget trial first.</div>
+                            <div class="ladder-item"><span class="status-chip hold">HOLD</span> High risk or weak economics. Request revisions or shortlist alternatives.</div>
+                        </div>
+                        <div class="workflow-note">
+                            <h4>Practical campaign rule</h4>
+                            <p>Professional shortlist quality improves when candidates pass all three gates across more than one scenario.</p>
+                        </div>
+                        <ul class="list">
+                            <li>Shortlist only candidates passing risk and cost thresholds</li>
+                            <li>Use Scenario A vs B for brief-level sensitivity checks</li>
+                            <li>Keep training drivers visible before final campaign approval</li>
+                        </ul>
+                    </div>
+                </article>
             </section>
         </section>
     </main>
@@ -1006,6 +1382,7 @@
         let selectedModel = 'xgboost';
         let scenarioA = null;
         let scenarioB = null;
+        let latestPrediction = null;
         let predictionLock = false;
         let autoTimer = null;
 
@@ -1046,51 +1423,70 @@
         };
 
         const SAMPLE_C = {
-            media_type: 'Post',
-            likes: 45112,
-            comments: 2834,
-            shares: 1256,
-            saves: 3891,
-            reach: 389200,
-            impressions: 621508,
-            caption_length: 456,
-            hashtags_count: 8,
-            followers_gained: 342,
-            traffic_source: 'Feed',
-            content_category: 'Fashion',
-            share_rate: 0.00562189,
-            save_rate: 0.01742816,
-            engagement_score: 142567,
+            media_type: 'Photo',
+            likes: 63206,
+            comments: 3490,
+            shares: 1680,
+            saves: 6809,
+            reach: 1237071,
+            impressions: 1345900,
+            caption_length: 1351,
+            hashtags_count: 20,
+            followers_gained: 805,
+            traffic_source: 'Hashtags',
+            content_category: 'Fitness',
+            share_rate: 0.001358047,
+            save_rate: 0.00550413,
+            engagement_score: 102462,
         };
 
         const SAMPLE_D = {
             media_type: 'Reel',
-            likes: 128654,
-            comments: 8923,
-            shares: 6245,
-            saves: 9134,
-            reach: 512890,
-            impressions: 1234567,
-            caption_length: 782,
-            hashtags_count: 12,
-            followers_gained: 1203,
-            traffic_source: 'Explore',
+            likes: 172053,
+            comments: 7222,
+            shares: 2875,
+            saves: 9290,
+            reach: 764030,
+            impressions: 897874,
+            caption_length: 446,
+            hashtags_count: 11,
+            followers_gained: 402,
+            traffic_source: 'External',
+            content_category: 'Music',
+            share_rate: 0.003762941,
+            save_rate: 0.0121592084,
+            engagement_score: 232282,
+        };
+
+        const SAMPLE_E = {
+            media_type: 'Video',
+            likes: 13204,
+            comments: 2032,
+            shares: 4817,
+            saves: 8406,
+            reach: 165,
+            impressions: 73191,
+            caption_length: 1655,
+            hashtags_count: 5,
+            followers_gained: 159,
+            traffic_source: 'Reels Feed',
             content_category: 'Fitness',
-            share_rate: 0.01245678,
-            save_rate: 0.01856234,
-            engagement_score: 198456,
+            share_rate: 29.1939393939,
+            save_rate: 50.9454545454,
+            engagement_score: 65343,
         };
 
         const fieldWeights = {
             likes: 0.29,
             impressions: 0.24,
             engagement_score: 0.19,
-            comments: 0.11,
-            saves: 0.07,
-            hashtags_count: 0.05,
-            share_rate: 0.03,
-            save_rate: 0.02,
+            reach: 0.16,
+            save_rate: 0.06,
+            share_rate: 0.05,
+            saves: 0.01,
         };
+
+        let effectiveFieldWeights = { ...fieldWeights };
 
         const normalizers = {
             likes: 200000,
@@ -1125,6 +1521,33 @@
         const kpiModel = document.getElementById('kpiModel');
         const kpiConfidence = document.getElementById('kpiConfidence');
         const compareBox = document.getElementById('compareBox');
+        const xgbPanel = document.getElementById('xgbPanel');
+        const rfPanel = document.getElementById('rfPanel');
+        const agreementLine = document.getElementById('agreementLine');
+        const riskBadge = document.getElementById('riskBadge');
+        const riskReasons = document.getElementById('riskReasons');
+        const promotionCost = document.getElementById('promotionCost');
+        const engagedUsers = document.getElementById('engagedUsers');
+        const cpeValue = document.getElementById('cpeValue');
+        const efficiencyValue = document.getElementById('efficiencyValue');
+        const recommendationValue = document.getElementById('recommendationValue');
+        const targetEngagement = document.getElementById('targetEngagement');
+        const goalAdviceList = document.getElementById('goalAdviceList');
+        const trainingInsightList = document.getElementById('trainingInsightList');
+        const approvalScore = document.getElementById('approvalScore');
+        const approvalStatus = document.getElementById('approvalStatus');
+        const approvalFill = document.getElementById('approvalFill');
+        const approvalNotes = document.getElementById('approvalNotes');
+
+        function formatNumber(value, fraction = 2) {
+            if (!Number.isFinite(value)) {
+                return '--';
+            }
+            return Number(value).toLocaleString(undefined, {
+                maximumFractionDigits: fraction,
+                minimumFractionDigits: fraction,
+            });
+        }
 
         function clamp(val, min, max) {
             return Math.max(min, Math.min(max, val));
@@ -1193,7 +1616,7 @@
         }
 
         function getExplainability(data) {
-            const points = Object.entries(fieldWeights).map(([key, w]) => {
+            const points = Object.entries(effectiveFieldWeights).map(([key, w]) => {
                 let base = data[key] / normalizers[key];
                 if (key === 'hashtags_count') {
                     const dist = Math.abs(data.hashtags_count - 12);
@@ -1219,6 +1642,299 @@
             });
 
             return clamp(Math.round(confidence), 40, 99);
+        }
+
+        function buildRiskSummary(confidence, diff, data) {
+            const reasons = [];
+            if (diff > 2.5) {
+                reasons.push('Large spread between XGBoost and Random Forest predictions.');
+            } else if (diff > 1.1) {
+                reasons.push('Moderate spread between model outputs.');
+            } else {
+                reasons.push('Strong agreement between both model outputs.');
+            }
+
+            let outlierCount = 0;
+            Object.entries(rangeCheck).forEach(([key, range]) => {
+                const val = data[key];
+                if (val < range[0] || val > range[1]) {
+                    outlierCount += 1;
+                }
+            });
+
+            if (outlierCount > 0) {
+                reasons.push(`${outlierCount} input field(s) are outside practical training ranges.`);
+            }
+
+            let level = 'low';
+            if (confidence < 60 || outlierCount >= 2 || diff > 2.5) {
+                level = 'high';
+            } else if (confidence < 78 || diff > 1.1 || outlierCount === 1) {
+                level = 'medium';
+            }
+
+            return { level, reasons };
+        }
+
+        function renderDecisionPanel(xgb, rf, riskInfo) {
+            xgbPanel.textContent = `XGBoost: ${formatNumber(xgb, 4)}`;
+            rfPanel.textContent = `Random Forest: ${formatNumber(rf, 4)}`;
+            agreementLine.textContent = `Agreement gap: ${formatNumber(Math.abs(xgb - rf), 4)} points`;
+
+            riskBadge.className = `risk-badge ${riskInfo.level}`;
+            riskBadge.textContent = `Risk: ${riskInfo.level.toUpperCase()}`;
+
+            riskReasons.innerHTML = '';
+            riskInfo.reasons.forEach((reason) => {
+                const li = document.createElement('li');
+                li.textContent = reason;
+                riskReasons.appendChild(li);
+            });
+        }
+
+        function renderScorecard() {
+            if (!latestPrediction) {
+                return;
+            }
+
+            const prediction = latestPrediction.selectedValue;
+            const data = latestPrediction.data;
+            const fee = Number.parseFloat(promotionCost.value);
+            const engaged = data.reach * (prediction / 100);
+
+            engagedUsers.textContent = Number.isFinite(engaged) ? formatNumber(engaged, 0) : '--';
+            recommendationValue.className = '';
+
+            if (!Number.isFinite(fee) || fee <= 0 || !Number.isFinite(engaged) || engaged <= 0) {
+                cpeValue.textContent = 'Add valid promotion cost';
+                efficiencyValue.textContent = '--';
+                recommendationValue.textContent = 'Awaiting cost input';
+                renderApprovalMeter();
+                return;
+            }
+
+            const cpe = fee / engaged;
+            const efficiencyIndex = (prediction * latestPrediction.confidence) / (cpe * 100);
+
+            cpeValue.textContent = `${formatNumber(cpe, 4)}`;
+            efficiencyValue.textContent = `${formatNumber(efficiencyIndex, 2)}`;
+
+            if (latestPrediction.riskInfo.level === 'high' || cpe > 0.3) {
+                recommendationValue.textContent = 'Review manually before campaign approval';
+                recommendationValue.className = 'recommendation-hold';
+            } else if (latestPrediction.riskInfo.level === 'medium' || cpe > 0.15) {
+                recommendationValue.textContent = 'Pilot test recommended';
+                recommendationValue.className = 'recommendation-pilot';
+            } else {
+                recommendationValue.textContent = 'Strong candidate for brand promotion';
+                recommendationValue.className = 'recommendation-go';
+            }
+
+            renderApprovalMeter();
+        }
+
+        function renderApprovalMeter() {
+            if (!latestPrediction) {
+                approvalScore.textContent = 'Approval Score: --';
+                approvalStatus.className = 'status-chip pilot';
+                approvalStatus.textContent = 'PENDING';
+                approvalFill.style.width = '0%';
+                approvalNotes.innerHTML = '<li>Run prediction to generate campaign approval signal.</li>';
+                return;
+            }
+
+            const snapshot = getApprovalSnapshot();
+            const statusInfo = getApprovalStatus(snapshot.score);
+
+            approvalScore.textContent = `Approval Score: ${snapshot.score}/100`;
+            approvalStatus.className = statusInfo.className;
+            approvalStatus.textContent = statusInfo.label;
+            approvalFill.style.width = `${snapshot.score}%`;
+
+            renderApprovalNotes(snapshot);
+        }
+
+        function getApprovalSnapshot() {
+            const diff = Math.abs(latestPrediction.xgb - latestPrediction.rf);
+            const fee = Number.parseFloat(promotionCost.value);
+            const engaged = latestPrediction.data.reach * (latestPrediction.selectedValue / 100);
+            const hasCost = Number.isFinite(fee) && fee > 0 && Number.isFinite(engaged) && engaged > 0;
+            const cpe = hasCost ? fee / engaged : null;
+
+            let score = latestPrediction.confidence;
+            score += getRiskAdjustment(latestPrediction.riskInfo.level);
+            score += getSpreadAdjustment(diff);
+            score += getCostAdjustment(cpe, hasCost);
+
+            return {
+                score: clamp(Math.round(score), 0, 100),
+                diff,
+                cpe,
+                hasCost,
+            };
+        }
+
+        function getRiskAdjustment(level) {
+            if (level === 'high') {
+                return -35;
+            }
+            if (level === 'medium') {
+                return -15;
+            }
+            return 8;
+        }
+
+        function getSpreadAdjustment(diff) {
+            if (diff <= 1) {
+                return 8;
+            }
+            if (diff > 2.5) {
+                return -12;
+            }
+            return 0;
+        }
+
+        function getCostAdjustment(cpe, hasCost) {
+            if (!hasCost) {
+                return 0;
+            }
+            if (cpe <= 0.1) {
+                return 10;
+            }
+            if (cpe > 0.3) {
+                return -25;
+            }
+            if (cpe > 0.2) {
+                return -10;
+            }
+            return 0;
+        }
+
+        function getApprovalStatus(score) {
+            if (score < 55) {
+                return { label: 'HOLD', className: 'status-chip hold' };
+            }
+            if (score < 75) {
+                return { label: 'PILOT', className: 'status-chip pilot' };
+            }
+            return { label: 'GO', className: 'status-chip go' };
+        }
+
+        function renderApprovalNotes(snapshot) {
+            const notes = [
+                `Model spread: ${formatNumber(snapshot.diff, 4)} points.`,
+                `Risk level: ${latestPrediction.riskInfo.level.toUpperCase()}.`,
+            ];
+
+            if (snapshot.hasCost) {
+                notes.push(`Cost efficiency (CPE): ${formatNumber(snapshot.cpe, 4)}.`);
+            } else {
+                notes.push('Add promotion cost to include economics in approval score.');
+            }
+
+            approvalNotes.innerHTML = '';
+            notes.forEach((text) => {
+                const li = document.createElement('li');
+                li.textContent = text;
+                approvalNotes.appendChild(li);
+            });
+        }
+
+        function renderGoalSeekingAdvice() {
+            if (!latestPrediction) {
+                goalAdviceList.innerHTML = '<li>Run prediction first to unlock action suggestions.</li>';
+                return;
+            }
+
+            const target = Number.parseFloat(targetEngagement.value);
+            if (!Number.isFinite(target) || target <= 0) {
+                goalAdviceList.innerHTML = '<li>Enter a valid target engagement to receive suggestions.</li>';
+                return;
+            }
+
+            const current = latestPrediction.selectedValue;
+            const ratio = target / Math.max(current, 0.0001);
+            const uplift = Math.max((ratio - 1) * 100, 0);
+
+            const topDrivers = Object.entries(effectiveFieldWeights)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3)
+                .map(([name]) => name.replace('_', ' '));
+
+            goalAdviceList.innerHTML = '';
+            if (target <= current) {
+                const li = document.createElement('li');
+                li.textContent = `Target already achieved. Current estimate ${formatNumber(current, 4)} is above target ${formatNumber(target, 4)}.`;
+                goalAdviceList.appendChild(li);
+                return;
+            }
+
+            const advices = [
+                `Need approximately ${formatNumber(uplift, 1)}% uplift from current estimate (${formatNumber(current, 4)} -> ${formatNumber(target, 4)}).`,
+                `Prioritize improvements in: ${topDrivers.join(', ')}.`,
+                'Use What-if controls (caption, hashtags, traffic source, category) and compare scenarios A vs B before finalizing briefs.',
+            ];
+
+            advices.forEach((text) => {
+                const li = document.createElement('li');
+                li.textContent = text;
+                goalAdviceList.appendChild(li);
+            });
+        }
+
+        function renderTrainingInsights(payload) {
+            const modelComparison = payload?.model_comparison || {};
+            const fi = Array.isArray(payload?.feature_importance) ? payload.feature_importance : [];
+
+            trainingInsightList.innerHTML = '';
+
+            const best = payload?.best_model || modelComparison?.best_model || 'XGBoost';
+            const first = document.createElement('li');
+            first.textContent = `Best training model: ${best}.`;
+            trainingInsightList.appendChild(first);
+
+            const xgbR2 = modelComparison?.xgboost?.test_r2;
+            const rfR2 = modelComparison?.random_forest?.test_r2;
+            if (Number.isFinite(xgbR2) && Number.isFinite(rfR2)) {
+                const li = document.createElement('li');
+                li.textContent = `Test R2: XGBoost ${formatNumber(xgbR2, 4)} vs Random Forest ${formatNumber(rfR2, 4)}.`;
+                trainingInsightList.appendChild(li);
+            }
+
+            const top = fi.slice(0, 4);
+            if (top.length > 0) {
+                const li = document.createElement('li');
+                li.textContent = `Top training drivers: ${top.map((item) => item.feature).join(', ')}.`;
+                trainingInsightList.appendChild(li);
+
+                effectiveFieldWeights = { ...fieldWeights };
+                top.forEach((item) => {
+                    if (normalizers[item.feature]) {
+                        effectiveFieldWeights[item.feature] = Number(item.importance) || 0;
+                    }
+                });
+            }
+
+            const li = document.createElement('li');
+            li.textContent = 'Use low-risk and low CPE combinations for campaign approvals.';
+            trainingInsightList.appendChild(li);
+        }
+
+        function loadTrainingInsights() {
+            fetch('/insights')
+                .then((resp) => {
+                    if (!resp.ok) {
+                        throw new Error('Insights endpoint unavailable');
+                    }
+                    return resp.json();
+                })
+                .then((payload) => {
+                    renderTrainingInsights(payload);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    trainingInsightList.innerHTML = '<li>Insights service unavailable. Using built-in heuristics.</li>';
+                });
         }
 
         async function predictBoth(data) {
@@ -1257,9 +1973,8 @@
                 likes: 'likes',
                 impressions: 'impressions',
                 engagement_score: 'engagement_score',
-                comments: 'comments',
+                reach: 'reach',
                 saves: 'saves',
-                hashtags_count: 'hashtags_count',
                 share_rate: 'share_rate',
                 save_rate: 'save_rate',
             };
@@ -1320,9 +2035,23 @@
                 const selectedValue = selectedModel === 'random_forest' ? both.rf : both.xgb;
                 const modelLabel = selectedModel === 'random_forest' ? 'RANDOM FOREST' : 'XGBOOST';
                 const confidence = computeConfidence(both.xgb, both.rf, data);
+                const riskInfo = buildRiskSummary(confidence, Math.abs(both.xgb - both.rf), data);
 
                 renderPrediction(selectedValue, modelLabel, confidence, both.xgb, both.rf);
                 renderExplainability(data);
+                renderDecisionPanel(both.xgb, both.rf, riskInfo);
+
+                latestPrediction = {
+                    data,
+                    xgb: both.xgb,
+                    rf: both.rf,
+                    selectedValue,
+                    confidence,
+                    riskInfo,
+                };
+                renderScorecard();
+                renderGoalSeekingAdvice();
+                renderApprovalMeter();
             } catch (err) {
                 resultDiv.className = 'result error';
                 resultDiv.textContent = `Error: ${err.message}`;
@@ -1371,6 +2100,11 @@
             maybeAutoPredict();
         });
 
+        document.getElementById('sampleBtn5').addEventListener('click', () => {
+            fillForm(SAMPLE_E);
+            maybeAutoPredict();
+        });
+
         document.getElementById('saveScenarioA').addEventListener('click', () => {
             const value = Number.parseFloat(kpiValue.textContent);
             scenarioA = {
@@ -1392,6 +2126,9 @@
         });
 
         document.getElementById('compareScenarios').addEventListener('click', renderScenarioComparison);
+        document.getElementById('scorecardBtn').addEventListener('click', renderScorecard);
+        document.getElementById('goalSeekBtn').addEventListener('click', renderGoalSeekingAdvice);
+        promotionCost.addEventListener('input', renderScorecard);
 
         syncSlider('caption_length', 'caption_slider', 'captionVal');
         syncSlider('hashtags_count', 'hashtags_slider', 'hashtagsVal');
@@ -1402,6 +2139,7 @@
         }
 
         renderScenarioComparison();
+        loadTrainingInsights();
 
         document.getElementById('predictForm').addEventListener('submit', async function (e) {
             e.preventDefault();
